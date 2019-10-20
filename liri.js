@@ -2,8 +2,11 @@ require("dotenv").config();
 
 var keys = require("./keys.js");
 
+
 var Spotify = require("node-spotify-api");
 var spotify = new Spotify(keys.spotify);
+
+var fs = require('fs');
 
 var command = process.argv[2];
 var apiParam = process.argv[3];
@@ -15,18 +18,33 @@ var queryUrlBIT = "https://rest.bandsintown.com/artists/" + apiParam + "/events?
 
 //console.log(queryUrlOMDB);
 
-if (command === "movie-this")
-{
-    runOMDB();
-}
-
-else if (command === "concert-this")
+if (command === "concert-this")
 {
     runBIT();
 }
 
+else if (command === "spotify-this-song")
+{
+    runSpot();
+}
+
+else if (command === "movie-this")
+{
+    runOMDB();
+}
+
+else if (command === "do-what-it-says")
+{
+    runRandom();
+}
+
 function runBIT()
 {
+    if (apiParam === undefined)
+    {
+        apiParam = "Celine Dion";
+    }
+
     axios.get(queryUrlBIT).then(
         function(response)
         {
@@ -34,11 +52,11 @@ function runBIT()
             for (var i = 0; i < response.data.length; i++)
             {
                 //console.log(response.data[i].venue);
-                console.log("Band Name: " + response.data[i].lineup);
+                console.log("Band: " + response.data[i].lineup);
                 console.log("Venue Name: " + response.data[i].venue.name);
                 console.log("Venue Location: " + response.data[i].venue.city + ", " + response.data[i].venue.country);
                 console.log("Event Date: " + response.data[i].datetime);
-                console.log("------------------------------");
+                console.log("\n------------------------------\n");
             }
         })
         .catch(function(error)
@@ -68,8 +86,47 @@ function runBIT()
     );
 }
 
+function runSpot()
+{
+    //console.log(apiParam);
+    if (apiParam === undefined)
+    {
+        apiParam = "The Sign, Ace of Base";
+    }
+
+    spotify.search(
+        {
+            type: 'track', 
+            query: apiParam
+        }, 
+        function(err, data)
+        {
+            if (err)
+            {
+                return console.log('Error occurred: ' + err);
+            }
+       
+            //console.log(data.tracks.items); 
+            for (var i = 0; i < data.tracks.items.length; i++)
+            {
+                console.log("Artist: " + data.tracks.items[i].artists[0].name);
+                console.log("Song: " + data.tracks.items[i].name);
+                console.log("Album: " + data.tracks.items[i].album.name);
+                console.log("Preview Link: " + data.tracks.items[i].preview_url);
+                console.log("\n------------------------------\n");
+            }
+        }
+    );
+}
+
 function runOMDB()
 {
+    //console.log(apiParam);
+    if (apiParam === undefined)
+    {
+        apiParam = "aliens";
+    }
+
     axios.get(queryUrlOMDB).then(
         function(response)
         {
@@ -109,3 +166,13 @@ function runOMDB()
     );
 }
 
+function runRandom()
+{
+    fs.readFile('./random.txt', function (err, data)
+    {
+    if (err) throw err;
+
+
+    console.log(data);
+    });
+}
