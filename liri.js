@@ -52,29 +52,6 @@ function runLIRI()
     }
 }
 
-// before making the case statement above, I created this series of if and else if statements
-/**
-if (command === "concert-this")
-{
-    runBIT();
-}
-
-else if (command === "spotify-this-song")
-{
-    runSpot();
-}
-
-else if (command === "movie-this")
-{
-    runOMDB();
-}
-
-else if (command === "do-what-it-says")
-{
-    runRandom();
-}
-*/
-
 // function that controls bands in town api
 function runBIT()
 {
@@ -251,33 +228,3 @@ function checkApiParam()
         }
     }
 }
-
-/*
-function checkApiParam()
-{
-    if (apiParam === undefined)
-    {
-        if (command === "concert-this")
-        {
-            apiParam = "Celine Dion";
-        
-            queryUrlBIT = "https://rest.bandsintown.com/artists/" + apiParam + "/events?app_id=codingbootcamp";
-        }
-
-        else if (command === "spotify-this-song")
-        {
-            //console.log(apiParam);
-
-            apiParam = "The Sign, Ace of Base";
-        }
-
-        else if (command === "movie-this")
-        {
-            apiParam = "Mr Nobody";
-            //console.log(apiParam);
-    
-            queryUrlOMDB = "http://www.omdbapi.com/?t=" + apiParam + "&y=&plot=short&apikey=trilogy";
-        }
-    }
-}
-*/
