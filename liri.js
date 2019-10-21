@@ -1,21 +1,59 @@
+/**********VARIABLES**********/
+
+// require items
 require("dotenv").config();
-
+var axios = require("axios");
 var keys = require("./keys.js");
-
-
 var Spotify = require("node-spotify-api");
-var spotify = new Spotify(keys.spotify);
 
+// process.argv variables
 var command = process.argv[2];
 var apiParam = process.argv[3];
 
-var axios = require("axios");
-
-var queryUrlOMDB = "http://www.omdbapi.com/?t=" + apiParam + "&y=&plot=short&apikey=trilogy";
+// query URL variables
 var queryUrlBIT = "https://rest.bandsintown.com/artists/" + apiParam + "/events?app_id=codingbootcamp";
+var spotify = new Spotify(keys.spotify);
+var queryUrlOMDB = "http://www.omdbapi.com/?t=" + apiParam + "&y=&plot=short&apikey=trilogy";
 
-//console.log(queryUrlOMDB);
+/**********CALLING runLIRI**********/
+runLIRI();
 
+/**********FUNCTION SECTION**********/
+// main function that contains case statement to control which command is entered in node
+function runLIRI()
+{
+    if (command === undefined)
+    {
+        console.log("please enter a valid command");
+        return;
+    }
+
+    switch(command.toLowerCase())
+    {
+        case "concert-this":
+            runBIT();
+            break;
+
+        case "spotify-this-song":
+            runSpot();
+            break;
+
+        case "movie-this":
+            runOMDB();
+            break;
+
+        case "do-what-it-says":
+            runRandom();
+            break;
+
+        default:
+            console.log("please enter a valid command");
+            break;
+    }
+}
+
+// before making the case statement above, I created this series of if and else if statements
+/**
 if (command === "concert-this")
 {
     runBIT();
@@ -35,7 +73,9 @@ else if (command === "do-what-it-says")
 {
     runRandom();
 }
+*/
 
+// function that controls bands in town api
 function runBIT()
 {
     checkApiParam();
@@ -81,6 +121,7 @@ function runBIT()
     );
 }
 
+// function that controls spotify api
 function runSpot()
 {
     checkApiParam();
@@ -110,6 +151,7 @@ function runSpot()
     );
 }
 
+// function that controls omdb api
 function runOMDB()
 {
     checkApiParam();
@@ -153,6 +195,7 @@ function runOMDB()
     );
 }
 
+// function that controls information from random.txt
 function runRandom()
 {
     var fs = require('fs');
@@ -183,6 +226,33 @@ function runRandom()
     */
 }
 
+// function that checks to see if apiParam variable is blank or not
+function checkApiParam()
+{
+    if (apiParam === undefined)
+    {
+        switch(command)
+        {
+            case "concert-this":
+                apiParam = "Celine Dion";
+                queryUrlBIT = "https://rest.bandsintown.com/artists/" + apiParam + "/events?app_id=codingbootcamp";
+                break;
+
+            case "spotify-this-song":
+                //console.log(apiParam);
+                apiParam = "The Sign, Ace of Base";
+                break;
+
+            case "movie-this":
+                apiParam = "Mr Nobody";
+                //console.log(apiParam);
+                queryUrlOMDB = "http://www.omdbapi.com/?t=" + apiParam + "&y=&plot=short&apikey=trilogy";
+                break;
+        }
+    }
+}
+
+/*
 function checkApiParam()
 {
     if (apiParam === undefined)
@@ -210,3 +280,4 @@ function checkApiParam()
         }
     }
 }
+*/
