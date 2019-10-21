@@ -160,7 +160,7 @@ function runRandom()
     var data = fs.readFileSync('./random.txt', 'utf8');
     console.log(data);
 
-    data1 = data.split(",");
+    var data1 = data.split(",");
     console.log(data1);
 
     command = data1[0];
@@ -169,6 +169,8 @@ function runRandom()
     runSpot();
 
     /*
+    Ask Nick what I was doing wrong here.
+
     fs.readFile("./random.txt", function (err, data)
     {
         if (err) throw err;
