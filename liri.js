@@ -6,8 +6,6 @@ var keys = require("./keys.js");
 var Spotify = require("node-spotify-api");
 var spotify = new Spotify(keys.spotify);
 
-var fs = require('fs');
-
 var command = process.argv[2];
 var apiParam = process.argv[3];
 
@@ -157,14 +155,30 @@ function runOMDB()
 
 function runRandom()
 {
-    fs.readFile("./random.txt", function (err, data)
-    {
-    if (err) throw err;
+    var fs = require('fs');
 
+    var data = fs.readFileSync('./random.txt', 'utf8');
     console.log(data);
 
+    data1 = data.split(",");
+    console.log(data1);
 
+    command = data1[0];
+    apiParam = data1[1];
+
+    runSpot();
+
+    /*
+    fs.readFile("./random.txt", function (err, data)
+    {
+        if (err) throw err;
+
+        console.log(data);
+        //var data1 = data.split(",");
+        //console.log(data1);
+    
     });
+    */
 }
 
 function checkApiParam()
