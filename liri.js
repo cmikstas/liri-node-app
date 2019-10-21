@@ -125,7 +125,10 @@ function runOMDB()
     if (apiParam === undefined)
     {
         apiParam = "aliens";
+        //console.log(apiParam);
     }
+
+    queryUrlOMDB = "http://www.omdbapi.com/?t=" + apiParam + "&y=&plot=short&apikey=trilogy";
 
     axios.get(queryUrlOMDB).then(
         function(response)
