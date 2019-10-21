@@ -40,10 +40,7 @@ else if (command === "do-what-it-says")
 
 function runBIT()
 {
-    if (apiParam === undefined)
-    {
-        apiParam = "Celine Dion";
-    }
+    checkApiParam();
 
     axios.get(queryUrlBIT).then(
         function(response)
@@ -88,11 +85,7 @@ function runBIT()
 
 function runSpot()
 {
-    //console.log(apiParam);
-    if (apiParam === undefined)
-    {
-        apiParam = "The Sign, Ace of Base";
-    }
+    checkApiParam();
 
     spotify.search(
         {
@@ -121,14 +114,7 @@ function runSpot()
 
 function runOMDB()
 {
-    //console.log(apiParam);
-    if (apiParam === undefined)
-    {
-        apiParam = "aliens";
-        //console.log(apiParam);
-    }
-
-    queryUrlOMDB = "http://www.omdbapi.com/?t=" + apiParam + "&y=&plot=short&apikey=trilogy";
+    checkApiParam();
 
     axios.get(queryUrlOMDB).then(
         function(response)
@@ -171,11 +157,40 @@ function runOMDB()
 
 function runRandom()
 {
-    fs.readFile('./random.txt', function (err, data)
+    fs.readFile("./random.txt", function (err, data)
     {
     if (err) throw err;
 
-
     console.log(data);
+
+
     });
+}
+
+function checkApiParam()
+{
+    if (apiParam === undefined)
+    {
+        if (command === "concert-this")
+        {
+            apiParam = "Celine Dion";
+        
+            queryUrlBIT = "https://rest.bandsintown.com/artists/" + apiParam + "/events?app_id=codingbootcamp";
+        }
+
+        else if (command === "spotify-this-song")
+        {
+            //console.log(apiParam);
+
+            apiParam = "The Sign, Ace of Base";
+        }
+
+        else if (command === "movie-this")
+        {
+            apiParam = "Mr Nobody";
+            //console.log(apiParam);
+    
+            queryUrlOMDB = "http://www.omdbapi.com/?t=" + apiParam + "&y=&plot=short&apikey=trilogy";
+        }
+    }
 }
