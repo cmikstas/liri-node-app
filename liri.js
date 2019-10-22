@@ -6,6 +6,7 @@ require("dotenv").config();
 var axios = require("axios");
 var fs = require('fs');
 var keys = require("./keys.js");
+var moment = require("moment");
 var Spotify = require("node-spotify-api");
 
 // process.argv variables
@@ -76,8 +77,10 @@ function runBIT()
                 var date = dateArray[0];
                 var time = dateArray[1];
 
-                console.log("Event Date: " + date);
-                console.log("Event time: " + time);
+                var properDate = moment(date);
+
+                console.log("Event Date: " + properDate.format("MM/DD/YYYY"));
+                console.log("Event Time: " + time);
 
                 console.log("\n------------------------------\n");
             }
