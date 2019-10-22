@@ -18,7 +18,7 @@ var queryUrlBIT = "https://rest.bandsintown.com/artists/" + apiParam + "/events?
 var spotify = new Spotify(keys.spotify);
 var queryUrlOMDB = "http://www.omdbapi.com/?t=" + apiParam + "&y=&plot=short&apikey=trilogy";
 
-/**********CALLING runLIRI**********/
+/**********CALLING runLIRI()**********/
 
 runLIRI();
 
