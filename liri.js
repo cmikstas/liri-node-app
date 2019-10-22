@@ -13,7 +13,7 @@ var Spotify = require("node-spotify-api");
 var command = process.argv[2];
 var apiParam = process.argv[3];
 
-// query URL variables
+// API keys
 var queryUrlBIT = "https://rest.bandsintown.com/artists/" + apiParam + "/events?app_id=codingbootcamp";
 var spotify = new Spotify(keys.spotify);
 var queryUrlOMDB = "http://www.omdbapi.com/?t=" + apiParam + "&y=&plot=short&apikey=trilogy";
@@ -57,7 +57,7 @@ function runLIRI()
     }
 }
 
-// function that controls bands in town api
+// function that controls bands in town API
 function runBIT()
 {
     checkApiParam();
@@ -69,19 +69,33 @@ function runBIT()
             for (var i = 0; i < response.data.length; i++)
             {
                 //console.log(response.data[i].venue);
-                console.log("Artist: " + response.data[i].lineup);
-                console.log("Venue Name: " + response.data[i].venue.name);
-                console.log("Venue Location: " + response.data[i].venue.city + ", " + response.data[i].venue.country);
+                var artist = "Artist: " + response.data[i].lineup;
+                console.log(artist);
+
+                var venue = "Venue Name: " + response.data[i].venue.name;
+                console.log(venue);
+
+                var venueLoc = "Venue Location: " + response.data[i].venue.city + ", " + response.data[i].venue.country;
+                console.log(venueLoc);
 
                 // moment and split functions to get date and time into correct format
                 var dateArray = response.data[i].datetime.split("T");
                 var date = dateArray[0];
                 var time = dateArray[1];
                 var properDate = moment(date);
-                console.log("Event Date: " + properDate.format("MM/DD/YYYY"));
-                console.log("Event Time: " + time);
 
-                console.log("\n------------------------------\n");
+                var eventDate = "Event Date: " + properDate.format("MM/DD/YYYY");
+                console.log(eventDate);
+
+                var eventTime = "Event Time: " + time;
+                console.log(eventTime);
+
+                var lineBreak = "\n------------------------------\n";
+                console.log(lineBreak);
+
+                var dataBIT = "BANDS IN TOWN DATA:" + "\n" + artist + "\n" + venue + "\n" + venueLoc + "\n" + eventDate + "\n" + eventTime + "\n" + lineBreak;
+
+                addToLog(dataBIT);
             }
         })
         .catch(function(error)
@@ -111,7 +125,7 @@ function runBIT()
     );
 }
 
-// function that controls spotify api
+// function that controls Spotify API
 function runSpot()
 {
     checkApiParam();
@@ -131,17 +145,30 @@ function runSpot()
             //console.log(data.tracks.items); 
             for (var i = 0; i < data.tracks.items.length; i++)
             {
-                console.log("Artist: " + data.tracks.items[i].artists[0].name);
-                console.log("Song: " + data.tracks.items[i].name);
-                console.log("Album: " + data.tracks.items[i].album.name);
-                console.log("Preview Link: " + data.tracks.items[i].preview_url);
-                console.log("\n------------------------------\n");
+                var artist1 = "Artist: " + data.tracks.items[i].artists[0].name;
+                console.log(artist1);
+
+                var song = "Song: " + data.tracks.items[i].name;
+                console.log(song);
+
+                var album = "Album: " + data.tracks.items[i].album.name;
+                console.log(album);
+
+                var preview = "Preview Link: " + data.tracks.items[i].preview_url;
+                console.log(preview);
+
+                var lineBreak1 = "\n------------------------------\n"
+                console.log(lineBreak1);
+
+                var dataSpot = "SPOTIFY DATA:" + "\n" + artist1 + "\n" + song + "\n" + album + "\n" + preview + "\n" + lineBreak1;
+
+                addToLog(dataSpot);
             }
         }
     );
 }
 
-// function that controls omdb api
+// function that controls OMDB API
 function runOMDB()
 {
     checkApiParam();
@@ -150,13 +177,30 @@ function runOMDB()
         function(response)
         {
             //console.log(response.data.Ratings);
-            console.log("Movie Title: " + response.data.Title);
-            console.log("Release Year: " + response.data.Year);
-            console.log("IMDB Rating: " + response.data.imdbRating);
-            console.log("Rotten Tomatoes Rating: " + response.data.Ratings[1].Value);
-            console.log("Country Produced: " + response.data.Country);
-            console.log("Plot: " + response.data.Plot);
-            console.log("Starring: " + response.data.Actors);
+            var movieTitle = "Movie Title: " + response.data.Title;
+            console.log(movieTitle);
+
+            var releaseYear = "Release Year: " + response.data.Year;
+            console.log(releaseYear);
+
+            var ratingIMDB = "IMDB Rating: " + response.data.imdbRating;
+            console.log(ratingIMDB);
+
+            var ratingRT = "Rotten Tomatoes Rating: " + response.data.Ratings[1].Value;
+            console.log(ratingRT);
+
+            var produced = "Country Produced: " + response.data.Country;
+            console.log(produced);
+
+            var plot = "Plot: " + response.data.Plot;
+            console.log(plot);
+
+            var starring = "Starring: " + response.data.Actors;
+            console.log(starring);
+
+            dataOMDB = "OMDB DATA:" + "\n" + movieTitle + "\n" + releaseYear + "\n" + ratingIMDB + "\n" + ratingRT + "\n" + produced + "\n" + plot + "\n" + starring;
+
+            addToLog(dataOMDB);
         })
         .catch(function(error)
         {
@@ -206,13 +250,15 @@ function runRandom()
     });
 }
 
-// function that logs data in terminal/bash window to log.txt file
-function addToLog()
+// function that logs data from terminal/bash window to log.txt file
+function addToLog(data)
 {
-    fs.appendFile('./log.txt', 'data to append', function (err)
+    fs.appendFile('./log.txt', data, function (err)
     {
+
         if (err) throw err;
-        console.log('Saved!');
+        //console.log('Saved!');
+
     });
 }
 
