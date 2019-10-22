@@ -73,12 +73,11 @@ function runBIT()
                 console.log("Venue Name: " + response.data[i].venue.name);
                 console.log("Venue Location: " + response.data[i].venue.city + ", " + response.data[i].venue.country);
 
+                // moment and split functions to get date and time into correct format
                 var dateArray = response.data[i].datetime.split("T");
                 var date = dateArray[0];
                 var time = dateArray[1];
-
                 var properDate = moment(date);
-
                 console.log("Event Date: " + properDate.format("MM/DD/YYYY"));
                 console.log("Event Time: " + time);
 
@@ -189,30 +188,22 @@ function runOMDB()
 // function that controls information from random.txt
 function runRandom()
 {
-    var data = fs.readFileSync('./random.txt', 'utf8');
-    console.log(data);
-
-    var data1 = data.split(",");
-    console.log(data1);
-
-    command = data1[0];
-    apiParam = data1[1];
-
-    runSpot();
-
-    /*
-    Ask Nick what I am doing wrong here.
-
-    fs.readFile("./random.txt", function (err, data)
+    fs.readFile("./random.txt", "utf8", function(error, data)
     {
-        if (err) throw err;
+        // If the code experiences any errors it will log the error to the console.
+        if (error)
+        {
+            return console.log(error);
+        }
 
-        console.log(data);
-        //var data1 = data.split(",");
+        var data1 = data.split(",");
         //console.log(data1);
     
+        command = data1[0];
+        apiParam = data1[1];
+    
+        runSpot();
     });
-    */
 }
 
 // function that logs data in terminal/bash window to log.txt file
