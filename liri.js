@@ -2,7 +2,9 @@
 
 // require items
 require("dotenv").config();
+
 var axios = require("axios");
+var fs = require('fs');
 var keys = require("./keys.js");
 var Spotify = require("node-spotify-api");
 
@@ -16,9 +18,11 @@ var spotify = new Spotify(keys.spotify);
 var queryUrlOMDB = "http://www.omdbapi.com/?t=" + apiParam + "&y=&plot=short&apikey=trilogy";
 
 /**********CALLING runLIRI**********/
+
 runLIRI();
 
 /**********FUNCTION SECTION**********/
+
 // main function that contains case statement to control which command is entered in node
 function runLIRI()
 {
@@ -64,10 +68,17 @@ function runBIT()
             for (var i = 0; i < response.data.length; i++)
             {
                 //console.log(response.data[i].venue);
-                console.log("Band: " + response.data[i].lineup);
+                console.log("Artist: " + response.data[i].lineup);
                 console.log("Venue Name: " + response.data[i].venue.name);
                 console.log("Venue Location: " + response.data[i].venue.city + ", " + response.data[i].venue.country);
-                console.log("Event Date: " + response.data[i].datetime);
+
+                var dateArray = response.data[i].datetime.split("T");
+                var date = dateArray[0];
+                var time = dateArray[1];
+
+                console.log("Event Date: " + date);
+                console.log("Event time: " + time);
+
                 console.log("\n------------------------------\n");
             }
         })
@@ -175,8 +186,6 @@ function runOMDB()
 // function that controls information from random.txt
 function runRandom()
 {
-    var fs = require('fs');
-
     var data = fs.readFileSync('./random.txt', 'utf8');
     console.log(data);
 
@@ -189,7 +198,7 @@ function runRandom()
     runSpot();
 
     /*
-    Ask Nick what I was doing wrong here.
+    Ask Nick what I am doing wrong here.
 
     fs.readFile("./random.txt", function (err, data)
     {
@@ -201,6 +210,16 @@ function runRandom()
     
     });
     */
+}
+
+// function that logs data in terminal/bash window to log.txt file
+function addToLog()
+{
+    fs.appendFile('./log.txt', 'data to append', function (err)
+    {
+        if (err) throw err;
+        console.log('Saved!');
+    });
 }
 
 // function that checks to see if apiParam variable is blank or not
