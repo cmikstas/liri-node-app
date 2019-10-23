@@ -4,7 +4,7 @@
 require("dotenv").config();
 
 var axios = require("axios");
-var fs = require('fs');
+var fs = require("fs");
 var keys = require("./keys.js");
 var moment = require("moment");
 var Spotify = require("node-spotify-api");
@@ -253,7 +253,7 @@ function runRandom()
 // function that logs data from terminal/bash window to log.txt file
 function addToLog(data)
 {
-    fs.appendFile('./log.txt', data, function (err)
+    fs.appendFile("./log.txt", data, function (err)
     {
 
         if (err) throw err;
